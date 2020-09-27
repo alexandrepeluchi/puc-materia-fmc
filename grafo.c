@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 
 // Grafo C# possui 3 vertices e 2 arestas
 struct g_csharp {
@@ -17,6 +18,49 @@ struct g_csharp GrafoCSharp() {
     };
 
     return csharp;
+}
+
+void DesenharGrafoCSharp() {
+    struct g_csharp csharp = GrafoCSharp();
+    int i, j;
+    int vertices = 3;
+    int aux;
+
+    printf("\n-----------------------------------------------------------------------\---------------\n\n");
+    printf("\nGrafo de C#:\n\n");
+
+    printf("\t\t\t\t+-------+\n");
+    printf("\t\t\t\t|   C#  |\n");
+    printf("\t\t\t\t+-------+\n");
+    printf("\t\t\t\t/\t\\\n");
+    printf("\t\t\t       /\t \\\n");
+    printf("\t+------------------------+\t +--------+\n");
+    printf("\t|  Basicos da Linguagem  |\t |  LINQ  |\n");
+    printf("\t+------------------------+\t +--------+\n");
+
+    printf("\nMatriz de Adjacencia:\n\n");
+
+    printf("  ");
+    for(i = 1; i <= 3; i++) {
+        printf("%d ", i);
+    }
+    printf("\n");
+
+    aux = 1;
+    for(i = 0; i < 3; i++)
+    {
+        printf("%d ", aux);
+        aux++;
+        for(j = 0; j < 3; j++)
+        {
+            printf("%d ", csharp.matriz[i][j]);
+        }
+        printf("\n");
+    }
+
+    printf("\n---------------------------------------------------------------------------------\-----\n\n");
+
+    printf("\n\n");
 }
 
 int main()
@@ -37,7 +81,7 @@ int main()
         printf("[1] C#\n");
 
 
-        printf("[0] Encerrar aplicacao")
+        printf("[0] Encerrar aplicacao");
 
         printf("\n\n");
         printf("Digite a sua opcao: ");
@@ -51,7 +95,7 @@ int main()
             break;
 
             case 1:
-
+                DesenharGrafoCSharp();
             break;
 
             default:
@@ -60,16 +104,6 @@ int main()
         }
         system("pause");
         system("cls");
-    }
-
-
-    for(i = 0; i < 3; i++)
-    {
-        for(j = 0; j < 3; j++)
-        {
-            printf("%d ", csharp.matriz[i][j]);
-        }
-        printf("\n");
     }
     return 0;
 }
