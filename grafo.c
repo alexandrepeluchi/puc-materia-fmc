@@ -3,6 +3,11 @@
 #include <time.h>
 #include <string.h>
 
+#define MAX_SIZE 100
+
+char * ParaMinusculo(char * str);
+void VerticeSelecionado(char * nomeDoVertice);
+
 // Grafo C# possui 3 vertices e 2 arestas
 struct g_csharp {
     int matriz[3][3];
@@ -26,7 +31,10 @@ void DesenharGrafoCSharp() {
     int vertices = 3;
     int aux;
 
-    printf("\n-----------------------------------------------------------------------\---------------\n\n");
+    char nomeDoVertice[MAX_SIZE];
+
+    // Desenha o grafo C#
+    printf("\n--------------------------------------------------------------------------------------\n\n");
     printf("\nGrafo de C#:\n\n");
 
     printf("\t\t\t\t+-------+\n");
@@ -38,6 +46,7 @@ void DesenharGrafoCSharp() {
     printf("\t|  Basicos da Linguagem  |\t |  LINQ  |\n");
     printf("\t+------------------------+\t +--------+\n");
 
+    // Exibe a Matriz de Adjacencia
     printf("\nMatriz de Adjacencia:\n\n");
 
     printf("  ");
@@ -58,7 +67,12 @@ void DesenharGrafoCSharp() {
         printf("\n");
     }
 
-    printf("\n---------------------------------------------------------------------------------\-----\n\n");
+    printf("\nSelecione um vertice digitando o nome: ");
+    scanf("%s", &nomeDoVertice);
+
+    VerticeSelecionado(nomeDoVertice);
+
+    printf("\n--------------------------------------------------------------------------------------\n\n");
 
     printf("\n\n");
 }
@@ -107,3 +121,24 @@ int main()
     }
     return 0;
 }
+
+char * ParaMinusculo(char * str) {
+    // Loop para transformar toda string para minisculo
+    int i;
+
+    for (i = 0; str[i]!='\0'; i++) {
+       if(str[i] >= 'A' && str[i] <= 'Z') {
+          str[i] = str[i] + 32;
+       }
+    }
+    return str;
+}
+
+void VerticeSelecionado(char * nomeDoVertice) {
+
+    nomeDoVertice = ParaMinusculo(nomeDoVertice);
+    printf("%s", nomeDoVertice);
+}
+
+
+
