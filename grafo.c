@@ -392,7 +392,14 @@ void DesenharGrafoDB() {
     printf("\nGrafo de Banco de Dados#:\n\n");
 
 
-
+    printf("\t    \t\t \t     +---------------+SQL Server\n");
+    printf("\t    \t\t \t     |\n");
+    printf("\t   +----------------------+DB Relacional+----+PostgreSQL\n");
+    printf("\t   |\t\t \t     |\n");
+    printf("\t   |\t\t \t     +---------------+MariaDB\n");
+    printf("\t   |\t\t \t     |\n");
+    printf("\t   |\t\t \t     +---------------+MySQL\n");
+    printf("\t   |\t\t \n\t   |\t\t \n");
     printf("\t   |\t\t+---+DB Cloud+-----+Azure CosmosDB\n");
     printf("\t   |\t\t|       |\n");
     printf("\t   |\t\t|       +----------+Amazon DynamoDB\n");
@@ -400,17 +407,17 @@ void DesenharGrafoDB() {
     printf(" |\tBanco de Dados      |\n");
     printf(" +--------------------------+\n");
     printf("\t   |\t\t|\n");
-    printf("\t   |\t\t|\t     +----------+ElasticSearch\n");
+    printf("\t   |\t\t|\t     +-------------+ElasticSearch\n");
     printf("\t   |\t\t|\t     |\n");
     printf("\t   |\t\t+---+Engines de Busca+-----+Solr\n");
     printf("\t   |\t\t \t     |\n");
-    printf("\t   |\t\t \t     +----------+Sphinx\n");
+    printf("\t   |\t\t \t     +-------------+Sphinx\n");
     printf("\t   |\t\t \n\t   |\t\t \n");
     printf("\t   |\t\t \t     +----------+MongoDb\n");
     printf("\t   |\t\t \t     |\n");
     printf("\t   |\t\t \t     +----------+Redis\n");
     printf("\t   |\t\t \t     |\n");
-    printf("\t   +----------------------+NoSQL+-----+LiteDB\n");
+    printf("\t   +----------------------+NoSQL+-------+LiteDB\n");
     printf("\t    \t\t \t     |\n");
     printf("\t    \t\t \t     +----------+Apache Cassandra\n");
     printf("\t    \t\t \t     |\n");
