@@ -19,61 +19,8 @@ void isEulerian(int **graph);
 // Manipulacao de Arquivo
 int **readmatrix(size_t *rows, size_t *cols, const char *filename);
 
-void DesenharGrafoCSharp() {
-    int i, j;
-    int vertices = 3;
-    int aux;
-    NODE = 3;
-
-    size_t cols, rows;
-    int **matrix = readmatrix(&rows, &cols, "GrafoCSharp.txt");
-
-    if (matrix == NULL)
-    {
-        fprintf(stderr, "Nao foi possivel ler a matriz.\n");
-        return;
-    }
-
-    // Desenha o grafo C#
-    printf("\n--------------------------------------------------------------------------------------\n\n");
-    printf("\nGrafo de C#:\n\n");
-
-    printf("\t\t\t\t+-------+\n");
-    printf("\t\t\t\t|   C#  |\n");
-    printf("\t\t\t\t+-------+\n");
-    printf("\t\t\t\t/\t\\\n");
-    printf("\t\t\t       /\t \\\n");
-    printf("\t+------------------------+\t +--------+\n");
-    printf("\t|  Basicos da Linguagem  |\t |  LINQ  |\n");
-    printf("\t+------------------------+\t +--------+\n");
-
-    // Exibe a Matriz de Adjacencia
-    printf("\nMatriz de Adjacencia:\n\n");
-
-    printf("  ");
-    for(i = 1; i <= 3; i++) {
-        printf("%d ", i);
-    }
-    printf("\n");
-
-    aux = 1;
-    for(i = 0; i < 3; i++)
-    {
-        printf("%d ", aux);
-        aux++;
-        for(j = 0; j < 3; j++)
-        {
-            printf("%d ", matrix[i][j]);
-        }
-        printf("\n");
-    }
-
-    isEulerian(matrix);
-
-    printf("\n--------------------------------------------------------------------------------------\n\n");
-
-    printf("\n\n");
-}
+void DesenharGrafoCSharp();
+void DesenharGrafoDB();
 
 int main()
 {
@@ -98,11 +45,11 @@ int main()
         // Exibicao do Menu
         printf("\n--- Trabalho de FMC - Grafos --- \n\n\n");
         printf("Selecione um dos grafos a seguir:\n\n");
-        printf("[1] C#\n");
-        printf("[5] Ler Arquivo\n");
+        printf("[1] Grafo C#\n");
+        printf("[2] Grafo DB\n\n");
+        printf("[5] Ler Arquivo\n\n");
 
-
-        printf("\n[0] Encerrar aplicacao");
+        printf("[0] Encerrar aplicacao");
 
         printf("\n\n");
         printf("Digite a sua opcao: ");
@@ -118,6 +65,10 @@ int main()
 
             case 1:
                 DesenharGrafoCSharp();
+            break;
+
+            case 2:
+                DesenharGrafoDB();
             break;
 
             case 5:
@@ -365,5 +316,119 @@ int **readmatrix(size_t *rows, size_t *cols, const char *filename)
     return matrix;
 }
 
+void DesenharGrafoCSharp() {
+    int i, j;
+    int vertices = 3;
+    int aux;
+    NODE = vertices;
+
+    size_t cols, rows;
+    int **matrix = readmatrix(&rows, &cols, "./Grafos/GrafoCSharp.txt");
+
+    if (matrix == NULL)
+    {
+        fprintf(stderr, "Nao foi possivel ler a matriz.\n");
+        return;
+    }
+
+    // Desenha o grafo C#
+    printf("\n--------------------------------------------------------------------------------------\n\n");
+    printf("\nGrafo de C#:\n\n");
+
+    printf("\t\t\t\t+-------+\n");
+    printf("\t\t\t\t|   C#  |\n");
+    printf("\t\t\t\t+-------+\n");
+    printf("\t\t\t\t/\t\\\n");
+    printf("\t\t\t       /\t \\\n");
+    printf("\t+------------------------+\t +--------+\n");
+    printf("\t|  Basicos da Linguagem  |\t |  LINQ  |\n");
+    printf("\t+------------------------+\t +--------+\n");
+
+    // Exibe a Matriz de Adjacencia
+    printf("\nMatriz de Adjacencia:\n\n");
+
+    printf("  ");
+    for(i = 1; i <= vertices; i++) {
+        printf("%d ", i);
+    }
+    printf("\n");
+
+    aux = 1;
+    for(i = 0; i < vertices; i++)
+    {
+        printf("%d ", aux);
+        aux++;
+        for(j = 0; j < vertices; j++)
+        {
+            printf("%d ", matrix[i][j]);
+        }
+        printf("\n");
+    }
+
+    isEulerian(matrix);
+
+    printf("\n--------------------------------------------------------------------------------------\n\n");
+
+    printf("\n\n");
+}
+
+void DesenharGrafoDB() {
+    int i, j;
+    int vertices = 20;
+    int aux;
+    NODE = vertices;
+
+    size_t cols, rows;
+    int **matrix = readmatrix(&rows, &cols, "./Grafos/GrafoDB.txt");
+
+    if (matrix == NULL)
+    {
+        fprintf(stderr, "Nao foi possivel ler a matriz.\n");
+        return;
+    }
+
+    // Desenha o grafo C#
+    printf("\n--------------------------------------------------------------------------------------\n\n");
+    printf("\nGrafo de C#:\n\n");
+
+    printf("\t\t\t\t+-------+\n");
+    printf("\t\t\t\t|   C#  |\n");
+    printf("\t\t\t\t+-------+\n");
+    printf("\t\t\t\t/\t\\\n");
+    printf("\t\t\t       /\t \\\n");
+    printf("\t+------------------------+\t +--------+\n");
+    printf("\t|  Basicos da Linguagem  |\t |  LINQ  |\n");
+    printf("\t+------------------------+\t +--------+\n");
+
+    // Exibe a Matriz de Adjacencia
+    printf("\nMatriz de Adjacencia:\n\n");
+
+    printf("    ");
+    for(i = 1; i <= vertices; i++) {
+        if (i > 9) printf(" ");
+        printf("%d ", i);
+    }
+    printf("\n");
+
+    aux = 1;
+    for(i = 0; i < vertices; i++)
+    {
+        if (i < 9) printf(" ");
+        printf(" %d ", aux);
+        aux++;
+        for(j = 0; j < vertices; j++)
+        {
+            if (j > 8) printf("  ");
+            printf("%d ", matrix[i][j]);
+        }
+        printf("\n");
+    }
+
+    isEulerian(matrix);
+
+    printf("\n--------------------------------------------------------------------------------------\n\n");
+
+    printf("\n\n");
+}
 
 
