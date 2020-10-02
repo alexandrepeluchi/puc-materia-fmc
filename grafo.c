@@ -47,7 +47,8 @@ int main()
         printf("Selecione um dos grafos a seguir:\n\n");
         printf("[1] Grafo C#\n");
         printf("[2] Grafo DB\n\n");
-        printf("[5] Ler Arquivo\n\n");
+        printf("[5] Ler Arquivo\n");
+        printf("[6] Como utilizar a Aplicacao\n\n");
 
         printf("[0] Encerrar aplicacao");
 
@@ -130,6 +131,16 @@ int main()
                     free(matrix[i]);
                 free(matrix);
 
+            break;
+
+            case 6:
+                printf("\n--------------------------------------------------------------------------------------\n");
+                printf(" \n Para utilizar a aplicacao, selecione uma das opcoes digitando o numero correspondente entre '[]'.");
+                printf(" \n\n As opcoes '1' e '2' sao grafos existentes na aplicacao. \n\n A opcao '5' serve");
+                printf(" para leitura de arquivos .txt, crie um arquivo na raiz da aplicacao, insira a Matriz de Adjacencia, \n");
+                printf(" selecione a opcao, digite a quantidade de vertices corretos e a aplicacao ira exibir a matriz e classifica-lo\n");
+                printf(" se e' Euleriano.\n\n");
+                printf(" E por fim digite '6' para exibir o tutorial e '0' para encerrar a aplicacao.\n\n");
             break;
 
             default:
