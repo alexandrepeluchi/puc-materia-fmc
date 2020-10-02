@@ -429,10 +429,10 @@ void DesenharGrafoDB() {
     // Exibe a Matriz de Adjacencia
     printf("\nMatriz de Adjacencia:\n\n");
 
-    printf("    ");
+    printf("       ");
     for(i = 1; i <= vertices; i++) {
-        if (i > 9) printf(" ");
-        printf("%d ", i);
+        if (i > 9) printf("");
+        printf("%d   ", i);
     }
     printf("\n");
 
@@ -440,12 +440,12 @@ void DesenharGrafoDB() {
     for(i = 0; i < vertices; i++)
     {
         if (i < 9) printf(" ");
-        printf(" %d ", aux);
+        printf("  %d ", aux);
         aux++;
         for(j = 0; j < vertices; j++)
         {
-            if (j > 8) printf("  ");
-            printf("%d ", matrix[i][j]);
+            if (j > 8) printf(" ");
+            printf("  %d ", matrix[i][j]);
         }
         printf("\n");
     }
