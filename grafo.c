@@ -389,16 +389,22 @@ void DesenharGrafoDB() {
 
     // Desenha o grafo C#
     printf("\n--------------------------------------------------------------------------------------\n\n");
-    printf("\nGrafo de C#:\n\n");
+    printf("\nGrafo de Banco de Dados#:\n\n");
 
-    printf("\t\t\t\t+-------+\n");
-    printf("\t\t\t\t|   C#  |\n");
-    printf("\t\t\t\t+-------+\n");
-    printf("\t\t\t\t/\t\\\n");
-    printf("\t\t\t       /\t \\\n");
-    printf("\t+------------------------+\t +--------+\n");
-    printf("\t|  Basicos da Linguagem  |\t |  LINQ  |\n");
-    printf("\t+------------------------+\t +--------+\n");
+
+
+    printf("\t   |\t\t+---+DB Cloud+-----+Azure CosmosDB\n");
+    printf("\t   |\t\t|       |\n");
+    printf("\t   |\t\t|       +----------+Amazon DynamoDB\n");
+    printf(" +--------------------------+\n");
+    printf(" |\tBanco de Dados      |\n");
+    printf(" +--------------------------+\n");
+    printf("\t   |\t\t|\n");
+    printf("\t   |\t\t|\t     +----------+ElasticSearch\n");
+    printf("\t   |\t\t|\t     |\n");
+    printf("\t   |\t\t+---+Engines de Busca+-----+Solr\n");
+    printf("\t   |\t\t \t     |\n");
+    printf("\t   |\t\t \t     +----------+Sphinx\n");
 
     // Exibe a Matriz de Adjacencia
     printf("\nMatriz de Adjacencia:\n\n");
