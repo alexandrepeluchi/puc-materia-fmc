@@ -405,6 +405,19 @@ void DesenharGrafoDB() {
     printf("\t   |\t\t+---+Engines de Busca+-----+Solr\n");
     printf("\t   |\t\t \t     |\n");
     printf("\t   |\t\t \t     +----------+Sphinx\n");
+    printf("\t   |\t\t \n\t   |\t\t \n");
+    printf("\t   |\t\t \t     +----------+MongoDb\n");
+    printf("\t   |\t\t \t     |\n");
+    printf("\t   |\t\t \t     +----------+Redis\n");
+    printf("\t   |\t\t \t     |\n");
+    printf("\t   +----------------------+NoSQL+-----+LiteDB\n");
+    printf("\t    \t\t \t     |\n");
+    printf("\t    \t\t \t     +----------+Apache Cassandra\n");
+    printf("\t    \t\t \t     |\n");
+    printf("\t    \t\t \t     +----------+RavenDB\n");
+    printf("\t    \t\t \t     |\n");
+    printf("\t    \t\t \t     +----------+CouchDB\n");
+
 
     // Exibe a Matriz de Adjacencia
     printf("\nMatriz de Adjacencia:\n\n");
