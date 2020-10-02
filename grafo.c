@@ -3,6 +3,7 @@
 #include <time.h>
 #include <string.h>
 #include <stdbool.h>
+#include <errno.h>
 
 #define NODE 5
 #define MAX_SIZE 100
@@ -10,10 +11,23 @@
 char * ParaMinusculo(char * str);
 void VerticeSelecionado(char * nomeDoVertice);
 
+// Grafo Euleriano
 void traverse(int u, bool visited[]);
 bool isConnected();
-int isEulerian();
+void isEulerian();
 
+// Manipulacao de Arquivo
+int **readmatrix(size_t *rows, size_t *cols, const char *filename);
+
+/*
+int graph[NODE][NODE] = {
+   {0, 1, 1},
+   {1, 0, 0},
+   {1, 0, 0}
+};
+*/
+
+/*
 int graph[NODE][NODE] = {
    {0, 1, 1, 1, 0},
    {1, 0, 1, 0, 0},
@@ -21,8 +35,9 @@ int graph[NODE][NODE] = {
    {1, 0, 0, 0, 1},
    {0, 0, 0, 1, 0}
 };
+*/
 
-/*
+
  int graph[NODE][NODE] = {
    {0, 1, 1, 1, 1},
    {1, 0, 1, 0, 0},
@@ -30,7 +45,7 @@ int graph[NODE][NODE] = {
    {1, 0, 0, 0, 1},
    {1, 0, 0, 1, 0}
 };
- */
+
     //uncomment to check Euler Circuit
 /*
  int graph[NODE][NODE] = {
@@ -40,7 +55,8 @@ int graph[NODE][NODE] = {
    {1, 1, 0, 0, 1},
    {0, 0, 0, 1, 0}
 };
- */   //Uncomment to check Non Eulerian Graph
+*/
+//Uncomment to check Non Eulerian Graph
 
 // Grafo C# possui 3 vertices e 2 arestas
 struct g_csharp {
@@ -113,6 +129,10 @@ void DesenharGrafoCSharp() {
 
 int main()
 {
+    // File
+    FILE *fp;
+    char filename[20];
+
     // Adicionar essa linha dentro de um switch talvez
     struct g_csharp csharp = GrafoCSharp();
     int i, j;
@@ -121,20 +141,26 @@ int main()
     int quit = 0;
     int grafoSelecionado = 0;
 
+    int check;
+    int aux;
+
+    int quantidadeVertices;
+
     while(quit != 1)
     {
         // Exibicao do Menu
         printf("\n--- Trabalho de FMC - Grafos --- \n\n\n");
         printf("Selecione um dos grafos a seguir:\n\n");
         printf("[1] C#\n");
+        printf("[5] Ler Arquivo\n");
 
 
-        printf("[0] Encerrar aplicacao");
+        printf("\n[0] Encerrar aplicacao");
 
         printf("\n\n");
         printf("Digite a sua opcao: ");
         scanf("%d", &grafoSelecionado);
-        int check;
+
 
         switch(grafoSelecionado)
         {
@@ -145,22 +171,68 @@ int main()
 
             case 1:
                 //DesenharGrafoCSharp();
+                isEulerian();
+            break;
 
-                check = isEulerian();
-                printf("%d", check);
-                if (check == 0) {
-                    printf("\nThe graph is not an Eulerian graph.\n");
+            case 5:
+                printf("\n--------------------------------------------------------------------------------------\n");
+                printf("\nEnter a filename: ");
+                scanf("%s", &filename);
+
+                fp = fopen(filename, "r");
+
+                if (fp == NULL)
+                {
+                    printf("Erro! O arquivo nao foi encontrado ou nao pode ser aberto.\n\n");
+                    break;
                 }
-                if (check == 1) {
-                    printf("\nThe graph has an Eulerian path.\n");
+
+                size_t cols, rows;
+                int **matrix = readmatrix(&rows, &cols, filename);
+
+                if (matrix == NULL)
+                {
+                    fprintf(stderr, "Nao foi possivel ler a matriz.\n");
+                    return 1;
                 }
-                if (check == 2) {
-                    printf("\nThe graph has a Eulerian circuit.\n");
+
+                printf("\nDigite a quantidade de vertices do grafo: ");
+                scanf("%d", &quantidadeVertices);
+
+                if (quantidadeVertices != rows || quantidadeVertices != cols) {
+                    printf("\nErro! Quantidade de vertices inserida incompativel com a quantidade de vertices do arquivo.\n\n");
+                    break;
                 }
+
+                // Exibe a Matriz de Adjacencia
+                printf("\nMatriz de Adjacencia:\n\n");
+
+                printf("  ");
+                for(i = 1; i <= cols; i++) {
+                    printf("%d ", i);
+                }
+                printf("\n");
+
+                aux = 1;
+                for (size_t i = 0; i < rows; ++i)
+                {
+                    printf("%d ", aux);
+                    aux++;
+                    for (size_t j = 0; j < cols; ++j)
+                        printf("%d ", matrix[i][j]);
+                    puts("");
+                }
+                puts("");
+
+                // freeing memory
+                for (size_t i = 0; i < rows; ++i)
+                    free(matrix[i]);
+                free(matrix);
+
             break;
 
             default:
-                printf("\nGrafo selecionado nao existe, por favor digite uma opcao valida!\n\n");
+                printf("\nOpcao nao existe, por favor digite uma opcao valida!\n\n");
             break;
         }
         system("pause");
@@ -221,29 +293,126 @@ bool isConnected()
    return true;
 }
 
-int isEulerian()
+void isEulerian()
 {
-   if (isConnected() == false) //when graph is not connected
-      return 0;
-   int degree[NODE];
-   int oddDegree = 0;
+    if (isConnected() == false) {
+        printf("\nO grafo nao eh Euleriano.\n");
+        return;
+    }
 
-   for (int i = 0; i < NODE; i++)
-   {
-      for (int j = 0; j < NODE; j++)
-      {
-         if (graph[i][j])
+    int degree[NODE];
+    int oddDegree = 0;
+
+    for (int i = 0; i < NODE; i++)
+    {
+        for (int j = 0; j < NODE; j++)
+        {
+            if (graph[i][j])
             degree[i]++; //increase degree, when connected edge found
-      }
+        }
 
-      if (degree[i] % 2 != 0) //when degree of vertices are odd
-         oddDegree++;         //count odd degree vertices
-   }
+        if (degree[i] % 2 != 0) //when degree of vertices are odd
+        oddDegree++;         //count odd degree vertices
+    }
 
-   if (oddDegree > 2) //when vertices with odd degree greater than 2
-      return 0;
+    if (oddDegree > 2) {
+        printf("\nO grafo nao e' Euleriano - Possui %d vertices de grau impar.\n\n", oddDegree);
+        return;
+    }
 
-   return (oddDegree) ? 1 : 2; //when oddDegree is 0, it is Euler circuit, and when 2, it is Euler path
+    // Quando oddDegree for 0 é um circuito Euleriano quando for 2 é um caminho Euleriano
+    int check = (oddDegree) ? 1 : 2;
+
+    switch(check) {
+        case 1:
+            printf("\nO grafo e' um caminho Euleriano.\n\n");
+        break;
+
+        case 2:
+            printf("\nO grafo e' um circuito Euleriano.\n\n");
+        break;
+    }
+    return;
+}
+
+int **readmatrix(size_t *rows, size_t *cols, const char *filename)
+{
+    if(rows == NULL || cols == NULL || filename == NULL)
+        return NULL;
+
+    *rows = 0;
+    *cols = 0;
+
+    FILE *fp = fopen(filename, "r");
+
+    if(fp == NULL)
+    {
+        fprintf(stderr, "Nao foi possivel abrir %s: %s\n", filename, strerror(errno));
+        return NULL;
+    }
+
+    int **matrix = NULL, **tmp;
+
+    char line[1024];
+
+    while(fgets(line, sizeof line, fp))
+    {
+        if(*cols == 0)
+        {
+            // determine the size of the columns based on
+            // the first row
+            char *scan = line;
+            int dummy;
+            int offset = 0;
+            while(sscanf(scan, "%d%n", &dummy, &offset) == 1)
+            {
+                scan += offset;
+                (*cols)++;
+            }
+        }
+
+        tmp = realloc(matrix, (*rows + 1) * sizeof *matrix);
+
+        if(tmp == NULL)
+        {
+            fclose(fp);
+            return matrix; // return all you've parsed so far
+        }
+
+        matrix = tmp;
+
+        matrix[*rows] = calloc(*cols, sizeof *matrix[*rows]);
+
+        if(matrix[*rows] == NULL)
+        {
+            fclose(fp);
+            if(*rows == 0) // failed in the first row, free everything
+            {
+                fclose(fp);
+                free(matrix);
+                return NULL;
+            }
+
+            return matrix; // return all you've parsed so far
+        }
+
+        int offset = 0;
+        char *scan = line;
+        for(size_t j = 0; j < *cols; ++j)
+        {
+            if(sscanf(scan, "%d%n", matrix[*rows] + j, &offset) == 1)
+                scan += offset;
+            else
+                matrix[*rows][j] = 0; // could not read, set cell to 0
+        }
+
+        // incrementing rows
+        (*rows)++;
+    }
+
+    fclose(fp);
+
+    return matrix;
 }
 
 
