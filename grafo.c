@@ -2,11 +2,45 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <stdbool.h>
 
+#define NODE 5
 #define MAX_SIZE 100
 
 char * ParaMinusculo(char * str);
 void VerticeSelecionado(char * nomeDoVertice);
+
+void traverse(int u, bool visited[]);
+bool isConnected();
+int isEulerian();
+
+int graph[NODE][NODE] = {
+   {0, 1, 1, 1, 0},
+   {1, 0, 1, 0, 0},
+   {1, 1, 0, 0, 0},
+   {1, 0, 0, 0, 1},
+   {0, 0, 0, 1, 0}
+};
+
+/*
+ int graph[NODE][NODE] = {
+   {0, 1, 1, 1, 1},
+   {1, 0, 1, 0, 0},
+   {1, 1, 0, 0, 0},
+   {1, 0, 0, 0, 1},
+   {1, 0, 0, 1, 0}
+};
+ */
+    //uncomment to check Euler Circuit
+/*
+ int graph[NODE][NODE] = {
+   {0, 1, 1, 1, 0},
+   {1, 0, 1, 1, 0},
+   {1, 1, 0, 0, 0},
+   {1, 1, 0, 0, 1},
+   {0, 0, 0, 1, 0}
+};
+ */   //Uncomment to check Non Eulerian Graph
 
 // Grafo C# possui 3 vertices e 2 arestas
 struct g_csharp {
@@ -100,6 +134,7 @@ int main()
         printf("\n\n");
         printf("Digite a sua opcao: ");
         scanf("%d", &grafoSelecionado);
+        int check;
 
         switch(grafoSelecionado)
         {
@@ -109,7 +144,19 @@ int main()
             break;
 
             case 1:
-                DesenharGrafoCSharp();
+                //DesenharGrafoCSharp();
+
+                check = isEulerian();
+                printf("%d", check);
+                if (check == 0) {
+                    printf("\nThe graph is not an Eulerian graph.\n");
+                }
+                if (check == 1) {
+                    printf("\nThe graph has an Eulerian path.\n");
+                }
+                if (check == 2) {
+                    printf("\nThe graph has a Eulerian circuit.\n");
+                }
             break;
 
             default:
@@ -138,6 +185,65 @@ void VerticeSelecionado(char * nomeDoVertice) {
 
     nomeDoVertice = ParaMinusculo(nomeDoVertice);
     printf("%s", nomeDoVertice);
+}
+
+void traverse(int u, bool visited[])
+{
+   visited[u] = true; //mark v as visited
+
+   for (int v = 0; v < NODE; v++)
+   {
+      if (graph[u][v])
+      {
+         if (!visited[v])
+            traverse(v, visited);
+      }
+   }
+}
+
+bool isConnected()
+{
+   bool *vis;
+   //for all vertex u as start point, check whether all nodes are visible or not
+   for (int u; u < NODE; u++)
+   {
+      for (int i = 0; i < NODE; i++)
+         vis[i] = false; //initialize as no node is visited
+
+      traverse(u, vis);
+
+      for (int i = 0; i < NODE; i++)
+      {
+         if (!vis[i]) //if there is a node, not visited by traversal, graph is not connected
+            return false;
+      }
+   }
+   return true;
+}
+
+int isEulerian()
+{
+   if (isConnected() == false) //when graph is not connected
+      return 0;
+   int degree[NODE];
+   int oddDegree = 0;
+
+   for (int i = 0; i < NODE; i++)
+   {
+      for (int j = 0; j < NODE; j++)
+      {
+         if (graph[i][j])
+            degree[i]++; //increase degree, when connected edge found
+      }
+
+      if (degree[i] % 2 != 0) //when degree of vertices are odd
+         oddDegree++;         //count odd degree vertices
+   }
+
+   if (oddDegree > 2) //when vertices with odd degree greater than 2
+      return 0;
+
+   return (oddDegree) ? 1 : 2; //when oddDegree is 0, it is Euler circuit, and when 2, it is Euler path
 }
 
 
