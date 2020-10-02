@@ -5,83 +5,34 @@
 #include <stdbool.h>
 #include <errno.h>
 
-#define NODE 5
 #define MAX_SIZE 100
+int NODE = 0;
 
 char * ParaMinusculo(char * str);
 void VerticeSelecionado(char * nomeDoVertice);
 
 // Grafo Euleriano
-void traverse(int u, bool visited[]);
-bool isConnected();
-void isEulerian();
+void traverse(int u, bool visited[], int **graph);
+bool isConnected(int **graph);
+void isEulerian(int **graph);
 
 // Manipulacao de Arquivo
 int **readmatrix(size_t *rows, size_t *cols, const char *filename);
 
-/*
-int graph[NODE][NODE] = {
-   {0, 1, 1},
-   {1, 0, 0},
-   {1, 0, 0}
-};
-*/
-
-/*
-int graph[NODE][NODE] = {
-   {0, 1, 1, 1, 0},
-   {1, 0, 1, 0, 0},
-   {1, 1, 0, 0, 0},
-   {1, 0, 0, 0, 1},
-   {0, 0, 0, 1, 0}
-};
-*/
-
-
- int graph[NODE][NODE] = {
-   {0, 1, 1, 1, 1},
-   {1, 0, 1, 0, 0},
-   {1, 1, 0, 0, 0},
-   {1, 0, 0, 0, 1},
-   {1, 0, 0, 1, 0}
-};
-
-    //uncomment to check Euler Circuit
-/*
- int graph[NODE][NODE] = {
-   {0, 1, 1, 1, 0},
-   {1, 0, 1, 1, 0},
-   {1, 1, 0, 0, 0},
-   {1, 1, 0, 0, 1},
-   {0, 0, 0, 1, 0}
-};
-*/
-//Uncomment to check Non Eulerian Graph
-
-// Grafo C# possui 3 vertices e 2 arestas
-struct g_csharp {
-    int matriz[3][3];
-};
-
-struct g_csharp GrafoCSharp() {
-    struct g_csharp csharp = {
-        {
-            {0, 1, 1},
-            {0, 0, 0},
-            {0, 0, 0}
-        }
-    };
-
-    return csharp;
-}
-
 void DesenharGrafoCSharp() {
-    struct g_csharp csharp = GrafoCSharp();
     int i, j;
     int vertices = 3;
     int aux;
+    NODE = 3;
 
-    char nomeDoVertice[MAX_SIZE];
+    size_t cols, rows;
+    int **matrix = readmatrix(&rows, &cols, "GrafoCSharp.txt");
+
+    if (matrix == NULL)
+    {
+        fprintf(stderr, "Nao foi possivel ler a matriz.\n");
+        return;
+    }
 
     // Desenha o grafo C#
     printf("\n--------------------------------------------------------------------------------------\n\n");
@@ -112,15 +63,12 @@ void DesenharGrafoCSharp() {
         aux++;
         for(j = 0; j < 3; j++)
         {
-            printf("%d ", csharp.matriz[i][j]);
+            printf("%d ", matrix[i][j]);
         }
         printf("\n");
     }
 
-    printf("\nSelecione um vertice digitando o nome: ");
-    scanf("%s", &nomeDoVertice);
-
-    VerticeSelecionado(nomeDoVertice);
+    isEulerian(matrix);
 
     printf("\n--------------------------------------------------------------------------------------\n\n");
 
@@ -134,7 +82,6 @@ int main()
     char filename[20];
 
     // Adicionar essa linha dentro de um switch talvez
-    struct g_csharp csharp = GrafoCSharp();
     int i, j;
 
     // Controle da aplicacao
@@ -170,8 +117,7 @@ int main()
             break;
 
             case 1:
-                //DesenharGrafoCSharp();
-                isEulerian();
+                DesenharGrafoCSharp();
             break;
 
             case 5:
@@ -193,7 +139,7 @@ int main()
                 if (matrix == NULL)
                 {
                     fprintf(stderr, "Nao foi possivel ler a matriz.\n");
-                    return 1;
+                    break;
                 }
 
                 printf("\nDigite a quantidade de vertices do grafo: ");
@@ -223,6 +169,10 @@ int main()
                     puts("");
                 }
                 puts("");
+
+                // Seta a quantidade de vertices e classifica
+                NODE = quantidadeVertices;
+                isEulerian(matrix);
 
                 // freeing memory
                 for (size_t i = 0; i < rows; ++i)
@@ -259,7 +209,7 @@ void VerticeSelecionado(char * nomeDoVertice) {
     printf("%s", nomeDoVertice);
 }
 
-void traverse(int u, bool visited[])
+void traverse(int u, bool visited[], int **graph)
 {
    visited[u] = true; //mark v as visited
 
@@ -268,12 +218,12 @@ void traverse(int u, bool visited[])
       if (graph[u][v])
       {
          if (!visited[v])
-            traverse(v, visited);
+            traverse(v, visited, graph);
       }
    }
 }
 
-bool isConnected()
+bool isConnected(int **graph)
 {
    bool *vis;
    //for all vertex u as start point, check whether all nodes are visible or not
@@ -282,7 +232,7 @@ bool isConnected()
       for (int i = 0; i < NODE; i++)
          vis[i] = false; //initialize as no node is visited
 
-      traverse(u, vis);
+      traverse(u, vis, graph);
 
       for (int i = 0; i < NODE; i++)
       {
@@ -293,9 +243,9 @@ bool isConnected()
    return true;
 }
 
-void isEulerian()
+void isEulerian(int **graph)
 {
-    if (isConnected() == false) {
+    if (isConnected(graph) == false) {
         printf("\nO grafo nao eh Euleriano.\n");
         return;
     }
@@ -308,15 +258,15 @@ void isEulerian()
         for (int j = 0; j < NODE; j++)
         {
             if (graph[i][j])
-            degree[i]++; //increase degree, when connected edge found
+                degree[i]++;
         }
 
-        if (degree[i] % 2 != 0) //when degree of vertices are odd
-        oddDegree++;         //count odd degree vertices
+        if (degree[i] % 2 != 0)
+            oddDegree++;
     }
 
     if (oddDegree > 2) {
-        printf("\nO grafo nao e' Euleriano - Possui %d vertices de grau impar.\n\n", oddDegree);
+        printf("\nO grafo nao e' Euleriano.\n\n");
         return;
     }
 
